@@ -2,18 +2,20 @@ import React from "react"
 import { Link } from "gatsby"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
+//import Image from "../components/image"
 import SEO from "../components/seo"
 
 const IndexPage = () => (
   <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
+    <SEO title="Animesh KC Blog" />
+    <h1>Welcome to my blog</h1>
+    <p>
+      This blog will be focused on programming and personal development, often
+      in combination with one another. I love to learn and introspect, so this
+      blog is where I post personal findings of the technologies I've worked
+      with, the projects I've build, the books I've read, and the patterns I've
+      realized to learn and work more effectively.
+    </p>
     <Link to="/page-2/">Go to page 2</Link>
   </Layout>
 )
