@@ -24,19 +24,13 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <>
+    <div className="site">
       <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>© {new Date().getFullYear()}, Built by Animesh KC</footer>
-      </div>
-    </>
+      <main style={{ flexGrow: 1 }}>{children}</main>
+      <footer style={{ marginTop: "auto" }}>
+        © {new Date().getFullYear()}, Built by Animesh KC
+      </footer>
+    </div>
   )
 }
 
