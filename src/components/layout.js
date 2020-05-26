@@ -13,22 +13,25 @@ import Header from "./header"
 import "./layout.css"
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
+  const getSiteMetaData = graphql`
     query SiteTitleQuery {
       site {
         siteMetadata {
           title
+          author
         }
       }
     }
-  `)
+  `
+
+  const data = useStaticQuery(getSiteMetaData)
 
   return (
     <div className="site">
       <Header siteTitle={data.site.siteMetadata.title} />
-      <main style={{ flexGrow: 1 }}>{children}</main>
-      <footer style={{ marginTop: "auto" }}>
-        © {new Date().getFullYear()}, Built by Animesh KC
+      <main>{children}</main>
+      <footer>
+        © {new Date().getFullYear()}, {data.site.siteMetadata.author}
       </footer>
     </div>
   )

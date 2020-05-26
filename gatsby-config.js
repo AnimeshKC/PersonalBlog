@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: `Animesh KC's Blog`,
     description: `Animesh KC's blog`,
-    author: `@animeshkc`,
+    author: `Animesh KC`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -13,13 +13,23 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    `gatsby-transformer-remark`,
+
+    {
+      //for getting markdown
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `pages`,
+        path: `${__dirname}/src/pages/posts`,
+      },
+    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Animesh KC Blog`,
+        short_name: `Animesh Blog`,
         start_url: `/`,
         background_color: `#663399`,
         theme_color: `#663399`,
