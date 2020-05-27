@@ -7,7 +7,7 @@ const path = require("path")
 
 const { createFilePath } = require("gatsby-source-filesystem")
 const PostTemplate = path.resolve("./src/templates/postTemplate.js")
-const BlogTemplate = path.resolve("./src/templates/blog-template.js")
+const BlogTemplate = path.resolve("./src/templates/blogTemplate.js")
 // You can delete this file if you're not using it
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions

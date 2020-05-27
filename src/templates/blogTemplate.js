@@ -25,7 +25,7 @@ const getMarkdownPosts = graphql`
     }
   }
 `
-const IndexPage = () => (
+const BlogTemplate = () => (
   <Layout>
     <SEO title="Animesh KC Blog" />
     <h1>Welcome to my blog</h1>
@@ -63,4 +63,4 @@ const IndexPage = () => (
   </Layout>
 )
 
-export default IndexPage
+export default BlogTemplate
