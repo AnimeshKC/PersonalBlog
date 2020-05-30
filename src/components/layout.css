@@ -23,6 +23,7 @@ main {
   flex: 1 0 auto;
 }
 footer {
+  margin-top: 25px;
   width: 100vw;
   color: white;
   display: block;
