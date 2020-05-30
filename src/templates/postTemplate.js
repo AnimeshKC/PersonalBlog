@@ -7,6 +7,11 @@ const PostTemplate = ({ data: post }) => (
   <Layout>
     <div>
       <h1>{post.markdownRemark.frontmatter.title} </h1>
+      <h6>
+        Last updated -{" "}
+        {post.markdownRemark.frontmatter.updated ||
+          post.markdownRemark.frontmatter.date}
+      </h6>
       <div dangerouslySetInnerHTML={{ __html: post.markdownRemark.html }} />
     </div>
   </Layout>
@@ -18,6 +23,8 @@ export const query = graphql`
       html
       frontmatter {
         title
+        date(formatString: "MMMM Do, YYYY")
+        updated(formatString: "MMMM Do, YYYY")
       }
     }
   }

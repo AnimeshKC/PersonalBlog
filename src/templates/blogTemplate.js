@@ -10,7 +10,6 @@ export default ({ data, pageContext }) => {
   const nextPage = `/blog/${String(currentPage + 1)}`
   const prevPage =
     currentPage - 1 === 1 ? `/blog` : `/blog/${String(currentPage - 1)}`
-
   return (
     <Layout>
       <SEO title="Animesh KC Blog" />
@@ -24,6 +23,11 @@ export default ({ data, pageContext }) => {
                 {node.frontmatter.title}
               </Link>
               <span>- {node.frontmatter.date}</span>
+              <span>
+                {node.frontmatter.updated
+                  ? ` (updated  ${node.frontmatter.updated})`
+                  : ""}
+              </span>
             </h3>
             <p>{node.excerpt}</p>
           </div>
@@ -77,8 +81,9 @@ export const query = graphql`
           frontmatter {
             title
             date(formatString: "MMMM Do, YYYY")
+            updated(formatString: "MMMM Do, YYYY")
           }
-          excerpt
+          excerpt(pruneLength: 300)
         }
       }
     }
