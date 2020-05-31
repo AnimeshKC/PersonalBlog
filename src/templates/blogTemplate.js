@@ -6,10 +6,9 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 export default ({ data, pageContext }) => {
-  const { currentPage, isFirstPage, isLastPage, totalPages } = pageContext
+  const { currentPage, isLastPage, totalPages } = pageContext
   const nextPage = `/blog/${String(currentPage + 1)}`
-  const prevPage =
-    currentPage - 1 === 1 ? `/blog` : `/blog/${String(currentPage - 1)}`
+  const prevPage = currentPage - 1 === 1 ? `/` : `/${String(currentPage - 1)}`
   return (
     <Layout>
       <SEO title="Animesh KC Blog" />
@@ -43,13 +42,12 @@ export default ({ data, pageContext }) => {
             margin: "0 auto",
           }}
         >
-          {!isFirstPage && (
-            <Link to={prevPage} rel="prev">
-              Prev Page
-            </Link>
-          )}
+          <Link to={prevPage} rel="prev">
+            Prev Page
+          </Link>
+
           {Array.from({ length: totalPages }, (_, index) => (
-            <Link key={index} to={`/blog/${index === 0 ? "" : index + 1}`}>
+            <Link key={index} to={`/${index === 0 ? "" : index + 1}`}>
               {index + 1}
             </Link>
           ))}
@@ -67,6 +65,7 @@ export default ({ data, pageContext }) => {
 export const query = graphql`
   query($skip: Int!, $limit: Int!) {
     allMarkdownRemark(
+      filter: { frontmatter: { priority: { ne: "High" } } }
       skip: $skip
       limit: $limit
       sort: { order: DESC, fields: [frontmatter___date] }

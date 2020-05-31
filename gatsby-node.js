@@ -48,20 +48,31 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
 
-  const postsPerPage = 2
+  //query for all high priority posts
+  const featured = await graphql(`
+    {
+      allMarkdownRemark(filter: { frontmatter: { priority: { eq: "High" } } }) {
+        totalCount
+      }
+    }
+  `)
+  const featuredLength = featured.data.allMarkdownRemark.totalCount
+  const postsPerPage = 6
+  const mainPageRemainder = postsPerPage - featuredLength
+  //extraSkip is the number of non-featured articles to skip past the first page
+  const extraSkip = mainPageRemainder >= 0 ? mainPageRemainder : 0
   const totalPages = Math.ceil(posts.length / postsPerPage)
-  Array.from({ length: totalPages }).forEach((_, index) => {
-    const currentPage = index + 1
-    const isFirstPage = index === 0
-    const isLastPage = currentPage === totalPages
+  //Make an array for pages after the first page, i.e. with length totalPages - 1
 
+  Array.from({ length: totalPages - 1 }).forEach((_, index) => {
+    const currentPage = index + 2 //0th index represents the second page
+    const isLastPage = currentPage === totalPages
     createPage({
-      path: isFirstPage ? "/blog" : `/blog/${currentPage}`,
+      path: `/${currentPage}`,
       component: BlogTemplate,
       context: {
         limit: postsPerPage,
-        skip: index * postsPerPage,
-        isFirstPage,
+        skip: extraSkip + index * postsPerPage,
         isLastPage,
         currentPage,
         totalPages,
