@@ -4,6 +4,7 @@ import React from "react"
 function PaginationLinks(props) {
   const totalPages = props.totalPages
   const currentPage = props.currentPage
+  const prevPageRef = currentPage === 2 ? `/` : `/${String(currentPage - 1)}`
   return (
     <div
       style={{
@@ -15,7 +16,7 @@ function PaginationLinks(props) {
       }}
     >
       {currentPage > 1 ? (
-        <Link to={`/${String(currentPage - 1)}`} rel="prev">
+        <Link to={prevPageRef} rel="prev">
           Prev Page
         </Link>
       ) : (
