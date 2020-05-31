@@ -8,6 +8,8 @@ const path = require("path")
 const { createFilePath } = require("gatsby-source-filesystem")
 const PostTemplate = path.resolve("./src/templates/postTemplate.js")
 const BlogTemplate = path.resolve("./src/templates/blogTemplate.js")
+
+const { postsPerPage } = require("./src/constants/postsPerPage.js")
 // You can delete this file if you're not using it
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
@@ -57,7 +59,6 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
   const featuredLength = featured.data.allMarkdownRemark.totalCount
-  const postsPerPage = 6
   const mainPageRemainder = postsPerPage - featuredLength
   //extraSkip is the number of non-featured articles to skip past the first page
   const extraSkip = mainPageRemainder >= 0 ? mainPageRemainder : 0

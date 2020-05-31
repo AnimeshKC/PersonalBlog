@@ -5,6 +5,8 @@ import Layout from "../components/layout"
 //import Image from "../components/image"
 import SEO from "../components/seo"
 
+import PostDisplay from "../components/postDisplay"
+
 export default ({ data, pageContext }) => {
   const { currentPage, isLastPage, totalPages } = pageContext
   const nextPage = `/blog/${String(currentPage + 1)}`
@@ -14,23 +16,7 @@ export default ({ data, pageContext }) => {
       <SEO title="Animesh KC Blog" />
       <div>
         <h1> Page {currentPage}</h1>
-        <h4>{data.allMarkdownRemark.totalCount} Posts </h4>
-        {data.allMarkdownRemark.edges.map(({ node }) => (
-          <div key={node.id}>
-            <h3>
-              <Link to={`/posts${node.fields.slug}`}>
-                {node.frontmatter.title}
-              </Link>
-              <span>- {node.frontmatter.date}</span>
-              <span>
-                {node.frontmatter.updated
-                  ? ` (updated  ${node.frontmatter.updated})`
-                  : ""}
-              </span>
-            </h3>
-            <p>{node.excerpt}</p>
-          </div>
-        ))}
+        <PostDisplay postsArray={data.allMarkdownRemark.edges} />
 
         {/*Pagination Links */}
         <div
