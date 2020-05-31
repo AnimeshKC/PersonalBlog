@@ -1,13 +1,17 @@
 import React from "react"
-import { Link, StaticQuery, graphql } from "gatsby"
+import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
 //import Image from "../components/image"
+import PostDisplay from "../components/postDisplay"
 import SEO from "../components/seo"
-
-const getMarkdownPosts = graphql`
-  {
-    allMarkdownRemark {
+import { postsPerPage } from "../constants/postsPerPage"
+export const query = graphql`
+  query {
+    priorityPosts: allMarkdownRemark(
+      filter: { frontmatter: { priority: { eq: "High" } } }
+      sort: { order: DESC, fields: [frontmatter___date] }
+    ) {
       totalCount
       edges {
         node {
@@ -17,50 +21,68 @@ const getMarkdownPosts = graphql`
           id
           frontmatter {
             title
-            date
+            date(formatString: "MMMM Do, YYYY")
+            updated(formatString: "MMMM Do, YYYY")
           }
-          excerpt
+          excerpt(pruneLength: 300)
         }
       }
     }
+    additionalPosts: allMarkdownRemark(
+      filter: { frontmatter: { priority: { ne: "High" } } }
+      limit: 6
+      sort: { order: DESC, fields: [frontmatter___date] }
+    ) {
+      totalCount
+      edges {
+        node {
+          fields {
+            slug
+          }
+          id
+          frontmatter {
+            title
+            date(formatString: "MMMM Do, YYYY")
+            updated(formatString: "MMMM Do, YYYY")
+          }
+          excerpt(pruneLength: 300)
+        }
+      }
+    }
+    allPosts: allMarkdownRemark {
+      totalCount
+    }
   }
 `
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Animesh KC Blog" />
-    <h1>Welcome to my blog</h1>
-    <div>
-      <p>
-        This blog will be focused on programming and personal development, often
-        in combination with one another. I love to learn and introspect, so this
-        blog is where I post personal findings of the technologies I've worked
-        with, the projects I've built, the books I've read, and the patterns
-        I've realized to learn and work more effectively.
-      </p>
-    </div>
-    <StaticQuery
-      query={getMarkdownPosts}
-      render={data => (
+
+const IndexPage = ({ data }) => {
+  const totalPosts = data.allPosts.totalCount
+  const numPriorityPosts = data.priorityPosts.totalCount
+  const numAdditionalPosts =
+    postsPerPage > numPriorityPosts ? postsPerPage - numPriorityPosts : 0
+
+  const priorityPosts = data.priorityPosts.edges
+  const additionalPosts = data.additionalPosts.edges.slice(
+    0,
+    numAdditionalPosts
+  )
+
+  return (
+    <Layout>
+      <SEO title="Animesh KC Blog" />
+      <h4>{totalPosts} Posts</h4>
+      <h2> Featured Posts</h2>
+      <PostDisplay postsArray={priorityPosts} />
+      {additionalPosts.length ? (
         <>
-          <h4> {data.allMarkdownRemark.totalCount} Posts</h4>
-          {data.allMarkdownRemark.edges.map(({ node }) => {
-            return (
-              <div key={node.id}>
-                <h3>
-                  <Link to={`/posts${node.fields.slug}`}>
-                    {node.frontmatter.title}
-                  </Link>
-                  <span className="dateDisplay">- {node.frontmatter.date}</span>
-                </h3>
-                <p>{node.excerpt}</p>
-              </div>
-            )
-          })}
+          <h2> Additional Posts</h2>
+          <PostDisplay postsArray={additionalPosts} />
         </>
+      ) : (
+        ""
       )}
-    />
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+    </Layout>
+  )
+}
 
 export default IndexPage
