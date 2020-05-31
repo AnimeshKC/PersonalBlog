@@ -1,16 +1,14 @@
 import React from "react"
-import { graphql, Link } from "gatsby"
+import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
 //import Image from "../components/image"
 import SEO from "../components/seo"
 
 import PostDisplay from "../components/postDisplay"
-
+import PaginationLinks from "../components/paginationLinks"
 export default ({ data, pageContext }) => {
-  const { currentPage, isLastPage, totalPages } = pageContext
-  const nextPage = `/blog/${String(currentPage + 1)}`
-  const prevPage = currentPage - 1 === 1 ? `/` : `/${String(currentPage - 1)}`
+  const { currentPage, totalPages } = pageContext
   return (
     <Layout>
       <SEO title="Animesh KC Blog" />
@@ -19,30 +17,7 @@ export default ({ data, pageContext }) => {
         <PostDisplay postsArray={data.allMarkdownRemark.edges} />
 
         {/*Pagination Links */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
-            maxWidth: 300,
-            margin: "0 auto",
-          }}
-        >
-          <Link to={prevPage} rel="prev">
-            Prev Page
-          </Link>
-
-          {Array.from({ length: totalPages }, (_, index) => (
-            <Link key={index} to={`/${index === 0 ? "" : index + 1}`}>
-              {index + 1}
-            </Link>
-          ))}
-          {!isLastPage && (
-            <Link to={nextPage} rel="next">
-              Next Page
-            </Link>
-          )}
-        </div>
+        <PaginationLinks totalPages={totalPages} currentPage={currentPage} />
       </div>
     </Layout>
   )

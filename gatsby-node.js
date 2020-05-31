@@ -67,14 +67,12 @@ exports.createPages = async ({ graphql, actions }) => {
 
   Array.from({ length: totalPages - 1 }).forEach((_, index) => {
     const currentPage = index + 2 //0th index represents the second page
-    const isLastPage = currentPage === totalPages
     createPage({
       path: `/${currentPage}`,
       component: BlogTemplate,
       context: {
         limit: postsPerPage,
         skip: extraSkip + index * postsPerPage,
-        isLastPage,
         currentPage,
         totalPages,
       },

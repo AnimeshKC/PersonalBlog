@@ -6,6 +6,8 @@ import Layout from "../components/layout"
 import PostDisplay from "../components/postDisplay"
 import SEO from "../components/seo"
 import { postsPerPage } from "../constants/postsPerPage"
+import PaginationLinks from "../components/paginationLinks"
+
 export const query = graphql`
   query {
     priorityPosts: allMarkdownRemark(
@@ -30,7 +32,7 @@ export const query = graphql`
     }
     additionalPosts: allMarkdownRemark(
       filter: { frontmatter: { priority: { ne: "High" } } }
-      limit: 6
+      limit: 10
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       totalCount
@@ -67,6 +69,8 @@ const IndexPage = ({ data }) => {
     numAdditionalPosts
   )
 
+  const currentPage = 1
+  const totalPages = Math.ceil(totalPosts / postsPerPage)
   return (
     <Layout>
       <SEO title="Animesh KC Blog" />
@@ -81,6 +85,7 @@ const IndexPage = ({ data }) => {
       ) : (
         ""
       )}
+      <PaginationLinks totalPages={totalPages} currentPage={currentPage} />
     </Layout>
   )
 }
