@@ -1,0 +1,10 @@
+.tagButton {
+  background-color: #4e32a8;
+  color: white;
+  padding: 10px 20px;
+  font-size: 0.8em;
+}
+.tagButton:hover {
+  background-color: #35b15c;
+  color: #000000;
+}
