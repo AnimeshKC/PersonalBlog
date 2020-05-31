@@ -1,6 +1,6 @@
 import { Link } from "gatsby"
 import React from "react"
-
+import "./layout.css"
 function PostDisplay(props) {
   if (props.postsArray.length) {
     return (
@@ -13,6 +13,15 @@ function PostDisplay(props) {
                   {node.frontmatter.title}
                 </Link>
                 <span className="dateDisplay">- {node.frontmatter.date}</span>
+                <span className="dateDisplay"></span>
+                {node.frontmatter.updated ? (
+                  <span className="dateDisplay">
+                    {" "}
+                    (updated {node.frontmatter.updated} )
+                  </span>
+                ) : (
+                  ""
+                )}
               </h3>
               <p>{node.excerpt}</p>
             </div>
