@@ -33,6 +33,10 @@ exports.createPages = async ({ graphql, actions }) => {
             fields {
               slug
             }
+            id
+            frontmatter {
+              tags
+            }
           }
         }
       }
@@ -49,6 +53,28 @@ exports.createPages = async ({ graphql, actions }) => {
       },
     })
   })
+
+  //generate an object containing all tags and their frequency
+  let tagCount = {}
+
+  for (const edge of result.data.allMarkdownRemark.edges) {
+    const edgeTags = edge.node.frontmatter.tags
+    if (edgeTags) {
+      for (const tag of edgeTags) {
+        tagCount[tag] = tagCount.hasOwnProperty(tag) ? tagCount[tag] + 1 : 1
+      }
+    }
+  }
+
+  /*
+Example result: 
+{
+  Machine Learning: 1,
+  Personal Development: 1,
+  Programming: 2,
+  Web Dev: 1
+}
+  */
 
   //query for all high priority posts
   const featured = await graphql(`
