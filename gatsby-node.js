@@ -8,6 +8,7 @@ const path = require("path")
 const { createFilePath } = require("gatsby-source-filesystem")
 const PostTemplate = path.resolve("./src/templates/postTemplate.js")
 const BlogTemplate = path.resolve("./src/templates/blogTemplate.js")
+const TagPageTemplate = path.resolve("./src/templates/tagPageTemplate.js")
 
 const { postsPerPage } = require("./src/constants/postsPerPage.js")
 // You can delete this file if you're not using it
@@ -55,7 +56,7 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 
   //generate an object containing all tags and their frequency
-  let tagCount = {}
+  const tagCount = {}
 
   for (const edge of result.data.allMarkdownRemark.edges) {
     const edgeTags = edge.node.frontmatter.tags
@@ -65,7 +66,7 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     }
   }
-
+  const tagList = Object.keys(tagCount)
   /*
 Example result: 
 {
@@ -75,6 +76,16 @@ Example result:
   Web Dev: 1
 }
   */
+
+  //create page for Tags
+  createPage({
+    path: `/tags`,
+    component: TagPageTemplate,
+    context: {
+      tagList,
+      tagCount,
+    },
+  })
 
   //query for all high priority posts
   const featured = await graphql(`

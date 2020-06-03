@@ -8,3 +8,7 @@
   background-color: #35b15c;
   color: #000000;
 }
+.tagContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
