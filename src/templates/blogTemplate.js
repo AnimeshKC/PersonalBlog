@@ -42,6 +42,7 @@ export const query = graphql`
             title
             date(formatString: "MMMM Do, YYYY")
             updated(formatString: "MMMM Do, YYYY")
+            tags
           }
           excerpt(pruneLength: 300)
         }

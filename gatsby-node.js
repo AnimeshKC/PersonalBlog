@@ -9,6 +9,7 @@ const { createFilePath } = require("gatsby-source-filesystem")
 const PostTemplate = path.resolve("./src/templates/postTemplate.js")
 const BlogTemplate = path.resolve("./src/templates/blogTemplate.js")
 const TagPageTemplate = path.resolve("./src/templates/tagPageTemplate.js")
+const TagPostTemplate = path.resolve("./src/templates/tagPostTemplate.js")
 
 const { postsPerPage } = require("./src/constants/postsPerPage.js")
 // You can delete this file if you're not using it
@@ -86,6 +87,17 @@ Example result:
       tagCount,
     },
   })
+
+  //create a page for each individual tag
+  for (const tag of tagList) {
+    createPage({
+      path: `/tag/${tag.replace(/ /g, "_")}`,
+      component: TagPostTemplate,
+      context: {
+        tag,
+      },
+    })
+  }
 
   //query for all high priority posts
   const featured = await graphql(`
