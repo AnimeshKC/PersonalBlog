@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 
 import Layout from "../components/layout"
 //import Image from "../components/image"
@@ -7,6 +7,7 @@ import PostDisplay from "../components/postDisplay"
 import SEO from "../components/seo"
 import { postsPerPage } from "../constants/postsPerPage"
 import PaginationLinks from "../components/paginationLinks"
+import "../components/components.css"
 
 export const query = graphql`
   query {
@@ -25,6 +26,7 @@ export const query = graphql`
             title
             date(formatString: "MMMM Do, YYYY")
             updated(formatString: "MMMM Do, YYYY")
+            tags
           }
           excerpt(pruneLength: 300)
         }
@@ -46,6 +48,7 @@ export const query = graphql`
             title
             date(formatString: "MMMM Do, YYYY")
             updated(formatString: "MMMM Do, YYYY")
+            tags
           }
           excerpt(pruneLength: 300)
         }
@@ -53,6 +56,13 @@ export const query = graphql`
     }
     allPosts: allMarkdownRemark {
       totalCount
+      edges {
+        node {
+          frontmatter {
+            tags
+          }
+        }
+      }
     }
   }
 `
@@ -71,9 +81,32 @@ const IndexPage = ({ data }) => {
 
   const currentPage = 1
   const totalPages = Math.ceil(totalPosts / postsPerPage)
+
+  const allEdges = data.allPosts.edges
+  const tagCount = {}
+
+  for (const edge of allEdges) {
+    const edgeTags = edge.node.frontmatter.tags
+    if (edgeTags) {
+      for (const tag of edgeTags) {
+        tagCount[tag] = tagCount.hasOwnProperty(tag) ? tagCount[tag] + 1 : 1
+      }
+    }
+  }
+  const tagList = Object.keys(tagCount)
   return (
     <Layout>
       <SEO title="Animesh KC Blog" />
+      <h4>Filter by Tag</h4>
+      <ul className="post-tags">
+        {tagList.map(tag => (
+          <li key={tag}>
+            <Link to={`/tag/${tag.replace(/ /g, "_")}`}>
+              <button className="tagButton">{tag}</button>
+            </Link>
+          </li>
+        ))}
+      </ul>
       <h4>{totalPosts} Posts</h4>
       <h2> Featured Posts</h2>
       <PostDisplay postsArray={priorityPosts} />

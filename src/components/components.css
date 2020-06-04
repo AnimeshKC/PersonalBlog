@@ -1,7 +1,7 @@
 .tagButton {
   background-color: #4e32a8;
   color: white;
-  padding: 10px 20px;
+  padding: 8px 16px;
   font-size: 0.8em;
 }
 .tagButton:hover {
@@ -11,4 +11,14 @@
 .tagContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+ul.post-tags {
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  list-style: none;
+}
+li {
+  margin-right: 10px;
 }

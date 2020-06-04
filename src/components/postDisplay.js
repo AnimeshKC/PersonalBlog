@@ -1,6 +1,7 @@
 import { Link } from "gatsby"
 import React from "react"
 import "./layout.css"
+import "./components.css"
 function PostDisplay(props) {
   if (props.postsArray.length) {
     return (
@@ -24,6 +25,17 @@ function PostDisplay(props) {
                 )}
               </h3>
               <p>{node.excerpt}</p>
+              {node.frontmatter.tags ? (
+                <ul className="post-tags">
+                  {node.frontmatter.tags.map(tag => (
+                    <li key={tag}>
+                      <Link to={`/tag/${tag.replace(/ /g, "_")}`}>
+                        <button className="tagButton">{tag}</button>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
           )
         })}
