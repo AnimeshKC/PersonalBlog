@@ -94,7 +94,9 @@ const IndexPage = ({ data }) => {
         {tagList.map(tag => (
           <li key={tag}>
             <Link to={`/tag/${tag.replace(/ /g, "_")}`}>
-              <button className="tagButton">{tag}</button>
+              <button className="tagButton">
+                {tag}: {tagCount[tag]}
+              </button>
             </Link>
           </li>
         ))}
