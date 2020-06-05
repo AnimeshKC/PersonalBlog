@@ -10,8 +10,8 @@ const PostTemplate = path.resolve("./src/templates/postTemplate.js")
 const BlogTemplate = path.resolve("./src/templates/blogTemplate.js")
 const TagPageTemplate = path.resolve("./src/templates/tagPageTemplate.js")
 const TagPostTemplate = path.resolve("./src/templates/tagPostTemplate.js")
-
-const { postsPerPage } = require("./src/constants/postsPerPage.js")
+const { getTagCount } = require("./src/sharedLogic/getTagCount.js")
+const { postsPerPage } = require("./src/sharedLogic/postsPerPage.js")
 // You can delete this file if you're not using it
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
@@ -57,26 +57,8 @@ exports.createPages = async ({ graphql, actions }) => {
   })
 
   //generate an object containing all tags and their frequency
-  const tagCount = {}
-
-  for (const edge of result.data.allMarkdownRemark.edges) {
-    const edgeTags = edge.node.frontmatter.tags
-    if (edgeTags) {
-      for (const tag of edgeTags) {
-        tagCount[tag] = tagCount.hasOwnProperty(tag) ? tagCount[tag] + 1 : 1
-      }
-    }
-  }
+  const tagCount = getTagCount(result.data.allMarkdownRemark.edges)
   const tagList = Object.keys(tagCount)
-  /*
-Example result: 
-{
-  Machine Learning: 1,
-  Personal Development: 1,
-  Programming: 2,
-  Web Dev: 1
-}
-  */
 
   //create page for Tags
   createPage({

@@ -5,10 +5,10 @@ import Layout from "../components/layout"
 //import Image from "../components/image"
 import PostDisplay from "../components/postDisplay"
 import SEO from "../components/seo"
-import { postsPerPage } from "../constants/postsPerPage"
+import { postsPerPage } from "../sharedLogic/postsPerPage"
 import PaginationLinks from "../components/paginationLinks"
 import "../components/components.css"
-
+import { getTagCount } from "../sharedLogic/getTagCount"
 export const query = graphql`
   query {
     priorityPosts: allMarkdownRemark(
@@ -83,16 +83,8 @@ const IndexPage = ({ data }) => {
   const totalPages = Math.ceil(totalPosts / postsPerPage)
 
   const allEdges = data.allPosts.edges
-  const tagCount = {}
+  const tagCount = getTagCount(allEdges)
 
-  for (const edge of allEdges) {
-    const edgeTags = edge.node.frontmatter.tags
-    if (edgeTags) {
-      for (const tag of edgeTags) {
-        tagCount[tag] = tagCount.hasOwnProperty(tag) ? tagCount[tag] + 1 : 1
-      }
-    }
-  }
   const tagList = Object.keys(tagCount)
   return (
     <Layout>
