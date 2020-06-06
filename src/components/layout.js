@@ -31,6 +31,16 @@ const Layout = ({ children }) => {
       <Header siteTitle={data.site.siteMetadata.title} />
       <main>{children}</main>
       <footer>
+        <div className="footerContainer">
+          <div className="footerButtonContainer">Links and Source Code</div>
+          <div className="footerAbout">
+            <h2>About Animesh</h2>
+            <p>
+              I'm a software engineering student fascinated with learning about
+              technology and personal development.{" "}
+            </p>
+          </div>
+        </div>
         © {new Date().getFullYear()}, {data.site.siteMetadata.author}
       </footer>
     </div>

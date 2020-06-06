@@ -643,3 +643,13 @@ pre tt:after {
     font-size: 100%;
   }
 }
+
+.footerContainer {
+  display: flex;
+}
+.footerButtonContainer {
+  flex-grow: 1;
+}
+.footerAbout {
+  flex-grow: 2;
+}
